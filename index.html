@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual de Atividades — Analistas de Operação | Zukkin</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red-900: #7B0D0D;
+    --red-800: #9B1515;
+    --red-700: #B91C1C;
+    --red-600: #DC2626;
+    --red-500: #EF4444;
+    --red-400: #F87171;
+    --red-200: #FECACA;
+    --red-100: #FEE2E2;
+    --red-50:  #FFF5F5;
+    --cream:   #FDFAF7;
+    --ink:     #1A1010;
+    --ink-mid: #3D2020;
+    --ink-light: #6B4040;
+    --gray-200: #E8E0E0;
+    --gray-100: #F5F0F0;
+    --white:   #FFFFFF;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  /* ── SIDEBAR NAV ── */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 260px;
+    height: 100vh;
+    background: var(--ink);
+    overflow-y: auto;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 2rem;
+  }
+
+  .sidebar-logo {
+    padding: 2rem 1.5rem 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .sidebar-logo .brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--white);
+    letter-spacing: 0.04em;
+  }
+
+  .sidebar-logo .brand span {
+    color: var(--red-500);
+  }
+
+  .sidebar-logo .sub {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.35);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin-top: 0.2rem;
+  }
+
+  .nav-section-label {
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: rgba(255,255,255,0.2);
+    padding: 1.4rem 1.5rem 0.4rem;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.55rem 1.5rem;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    transition: all 0.2s;
+    border-left: 2px solid transparent;
+    font-weight: 400;
+  }
+
+  .nav-item:hover, .nav-item.active {
+    color: var(--white);
+    border-left-color: var(--red-500);
+    background: rgba(239,68,68,0.08);
+  }
+
+  .nav-item .num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--red-600);
+    min-width: 18px;
+  }
+
+  /* ── MAIN ── */
+  .main {
+    margin-left: 260px;
+    min-height: 100vh;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--ink);
+    position: relative;
+    overflow: hidden;
+    padding: 7rem 5rem 6rem;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(185,28,28,0.35) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: 20%;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(220,38,38,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--red-500);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.2s;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 30px;
+    height: 1px;
+    background: var(--red-600);
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.35s;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--red-400);
+  }
+
+  .hero-desc {
+    margin-top: 1.5rem;
+    font-size: 1rem;
+    color: rgba(255,255,255,0.45);
+    max-width: 520px;
+    line-height: 1.7;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.5s;
+  }
+
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.65s;
+  }
+
+  .tag {
+    font-size: 0.72rem;
+    font-weight: 500;
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    border: 1px solid rgba(239,68,68,0.3);
+    color: var(--red-400);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── CONTENT ── */
+  .content {
+    padding: 0 5rem 6rem;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    padding-top: 5rem;
+    opacity: 0;
+    transform: translateY(24px);
+    animation: fadeUp 0.6s ease forwards;
+  }
+
+  .section:nth-child(1) { animation-delay: 0.1s }
+  .section:nth-child(2) { animation-delay: 0.15s }
+  .section:nth-child(3) { animation-delay: 0.2s }
+
+  .section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--gray-200);
+  }
+
+  .section-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: var(--red-200);
+    line-height: 1;
+    letter-spacing: -0.04em;
+    flex-shrink: 0;
+    margin-top: -0.3rem;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+
+  .section-subtitle {
+    font-size: 0.85rem;
+    color: var(--ink-light);
+    margin-top: 0.3rem;
+  }
+
+  /* ── SUBSECTIONS ── */
+  .subsection {
+    margin-top: 2.5rem;
+  }
+
+  .subsection-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--red-700);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .subsection-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--red-200);
+  }
+
+  .sub-sub-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ink-mid);
+    margin: 1.5rem 0 0.6rem;
+  }
+
+  p {
+    color: var(--ink-light);
+    margin-bottom: 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  /* ── LISTS ── */
+  ul.styled, ol.styled {
+    padding-left: 1.2rem;
+    margin: 0.5rem 0 1rem;
+  }
+
+  ul.styled li, ol.styled li {
+    color: var(--ink-light);
+    font-size: 0.88rem;
+    padding: 0.25rem 0;
+    padding-left: 0.4rem;
+  }
+
+  ul.styled li::marker {
+    color: var(--red-600);
+  }
+
+  ol.styled li::marker {
+    color: var(--red-700);
+    font-weight: 600;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+  }
+
+  li strong {
+    color: var(--ink);
+  }
+
+  /* ── CARDS GRID ── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+    margin: 1.2rem 0;
+  }
+
+  .card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    padding: 1.2rem 1.2rem 1rem;
+    transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+  }
+
+  .card:hover {
+    box-shadow: 0 8px 24px rgba(155,21,21,0.1);
+    transform: translateY(-2px);
+    border-color: var(--red-200);
+  }
+
+  .card-icon {
+    font-size: 1.4rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .card-title {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.3rem;
+  }
+
+  .card-desc {
+    font-size: 0.78rem;
+    color: var(--ink-light);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* ── TABLE ── */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 1.2rem 0;
+    border-radius: 10px;
+    border: 1px solid var(--gray-200);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.83rem;
+  }
+
+  thead tr {
+    background: var(--red-800);
+  }
+
+  thead th {
+    color: var(--white);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.85rem 1rem;
+    text-align: left;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid var(--gray-200);
+    transition: background 0.15s;
+  }
+
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:nth-child(even) { background: var(--red-50); }
+  tbody tr:hover { background: var(--red-100); }
+
+  tbody td {
+    padding: 0.75rem 1rem;
+    color: var(--ink-light);
+    vertical-align: top;
+  }
+
+  tbody td strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* ── ALERTS ── */
+  .alert {
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    margin: 1.2rem 0;
+    font-size: 0.85rem;
+    display: flex;
+    gap: 0.8rem;
+    align-items: flex-start;
+  }
+
+  .alert-icon { font-size: 1rem; flex-shrink: 0; margin-top: 0.05rem; }
+
+  .alert.info {
+    background: #EFF6FF;
+    border-left: 3px solid #3B82F6;
+    color: #1E3A5F;
+  }
+
+  .alert.warning {
+    background: #FFFBEB;
+    border-left: 3px solid #F59E0B;
+    color: #78350F;
+  }
+
+  .alert.danger {
+    background: var(--red-100);
+    border-left: 3px solid var(--red-600);
+    color: var(--red-900);
+  }
+
+  .alert.success {
+    background: #F0FDF4;
+    border-left: 3px solid #22C55E;
+    color: #14532D;
+  }
+
+  .alert strong { font-weight: 600; }
+
+  /* ── TEXT BOX / TEMPLATE ── */
+  .text-template {
+    background: var(--ink);
+    border-radius: 10px;
+    padding: 1.4rem 1.6rem;
+    margin: 1rem 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .text-template::before {
+    content: 'TEXTO PADRÃO';
+    position: absolute;
+    top: 0.7rem; right: 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    color: var(--red-600);
+  }
+
+  .text-template p {
+    color: rgba(255,255,255,0.75);
+    font-size: 0.83rem;
+    margin-bottom: 0.4rem;
+    font-family: 'DM Mono', monospace;
+    line-height: 1.6;
+  }
+
+  .text-template p strong {
+    color: var(--red-400);
+  }
+
+  .text-template p.title-line {
+    color: var(--white);
+    font-weight: 500;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding-bottom: 0.6rem;
+    margin-bottom: 0.7rem;
+  }
+
+  /* ── STEP FLOW ── */
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 1.2rem 0;
+  }
+
+  .step {
+    display: flex;
+    gap: 1rem;
+    position: relative;
+  }
+
+  .step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 32px;
+    bottom: -4px;
+    width: 1px;
+    background: var(--red-200);
+  }
+
+  .step-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--red-800);
+    color: var(--white);
+    font-size: 0.72rem;
+    font-weight: 700;
+    font-family: 'DM Mono', monospace;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  .step-body {
+    padding: 0.1rem 0 1.2rem;
+    flex: 1;
+  }
+
+  .step-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.2rem;
+  }
+
+  .step-desc {
+    font-size: 0.82rem;
+    color: var(--ink-light);
+    margin: 0;
+  }
+
+  /* ── FORMULA BOX ── */
+  .formula {
+    background: var(--red-50);
+    border: 1px dashed var(--red-300, #FCA5A5);
+    border-radius: 8px;
+    padding: 1rem 1.3rem;
+    margin: 1rem 0;
+    text-align: center;
+  }
+
+  .formula .label {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--red-600);
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+  }
+
+  .formula .eq {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    color: var(--red-900);
+    font-style: italic;
+  }
+
+  .formula .example {
+    font-size: 0.78rem;
+    color: var(--ink-light);
+    margin-top: 0.4rem;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, var(--red-200), transparent);
+    margin: 2rem 0;
+  }
+
+  /* ── QUICK REF TABLE ── */
+  .quick-ref tbody td:first-child {
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .quick-ref tbody td:last-child {
+    font-size: 0.78rem;
+  }
+
+  /* ── BADGE ── */
+  .badge {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.18rem 0.55rem;
+    border-radius: 4px;
+    background: var(--red-100);
+    color: var(--red-800);
+    margin-left: 0.4rem;
+  }
+
+  .badge.green {
+    background: #D1FAE5;
+    color: #065F46;
+  }
+
+  .badge.blue {
+    background: #DBEAFE;
+    color: #1E3A8A;
+  }
+
+  /* ── FOOTER ── */
+  .page-footer {
+    margin-left: 260px;
+    background: var(--ink);
+    padding: 2.5rem 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .page-footer .brand-f {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--white);
+    font-weight: 700;
+  }
+
+  .page-footer .brand-f span { color: var(--red-500); }
+
+  .page-footer p {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.3);
+    margin: 0;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SCROLLBAR ── */
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .main, .page-footer { margin-left: 0; }
+    .hero, .content { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .hero { padding-top: 3rem; padding-bottom: 3rem; }
+    .card-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="brand">ZUK<span>KIN</span></div>
+    <div class="sub">Manual de Operações</div>
+  </div>
+  <div class="nav-section-label">Seções</div>
+  <a class="nav-item" href="#s1"><span class="num">01</span> Visão Geral</a>
+  <a class="nav-item" href="#s2"><span class="num">02</span> Infraestrutura</a>
+  <a class="nav-item" href="#s3"><span class="num">03</span> Processos Seletivos</a>
+  <a class="nav-item" href="#s4"><span class="num">04</span> Textos Padrão</a>
+  <a class="nav-item" href="#s5"><span class="num">05</span> Novos Pesquisadores</a>
+  <a class="nav-item" href="#s6"><span class="num">06</span> Pagamentos</a>
+  <a class="nav-item" href="#s7"><span class="num">07</span> Distratos</a>
+  <a class="nav-item" href="#s8"><span class="num">08</span> Agendamentos</a>
+  <a class="nav-item" href="#s9"><span class="num">09</span> Remanejamento</a>
+  <a class="nav-item" href="#s10"><span class="num">10</span> Dia a Dia</a>
+  <a class="nav-item" href="#s11"><span class="num">11</span> Referência Rápida</a>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-eyebrow">Manual Oficial · 2026</div>
+    <h1>Atividades dos<br><em>Analistas de Operação</em></h1>
+    <p class="hero-desc">Guia completo de processos, ferramentas e responsabilidades da equipe de Operações da Zukkin — do recrutamento à rotina de campo.</p>
+    <div class="hero-tags">
+      <span class="tag">Nicole</span>
+      <span class="tag">Gabriela</span>
+      <span class="tag">Mariana</span>
+      <span class="tag">Luiz</span>
+      <span class="tag">Julia</span>
+      <span class="tag">André</span>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- 1. VISÃO GERAL -->
+    <section class="section" id="s1">
+      <div class="section-header">
+        <div class="section-num">01</div>
+        <div>
+          <div class="section-title">Visão Geral do Departamento</div>
+          <div class="section-subtitle">Estrutura, equipe e dinâmica operacional</div>
+        </div>
+      </div>
+
+      <p>O time de Operações da Zukkin é responsável pela gestão completa dos pesquisadores de campo, desde o recrutamento até o encerramento de contratos. O departamento funciona de forma dinâmica, exigindo atenção a detalhes, agilidade e trabalho em conjunto entre analistas, estagiária de Operações e as demais áreas (RH, Financeiro, Qualidade).</p>
+
+      <div class="subsection">
+        <div class="subsection-title">Equipe</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Função</th><th>Integrantes</th><th>Escopo</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Analistas de Operação</strong></td>
+                <td>Nicole, Gabriela, Mariana, Luiz, Julia e André</td>
+                <td>Todos os módulos operacionais</td>
+              </tr>
+              <tr>
+                <td><strong>Estagiária de OP</strong></td>
+                <td>Ayumi</td>
+                <td>Suporte operacional e tarefas auxiliares</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="alert info">
+        <span class="alert-icon">ℹ️</span>
+        <div>Os analistas são o ponto central de toda a operação. Eles gerenciam pesquisadores, agendamentos, pagamentos, processos seletivos e ocorrências em campo, em parceria direta com a equipe de Qualidade (QL) e Recursos Humanos.</div>
+      </div>
+    </section>
+
+    <!-- 2. INFRAESTRUTURA -->
+    <section class="section" id="s2">
+      <div class="section-header">
+        <div class="section-num">02</div>
+        <div>
+          <div class="section-title">Infraestrutura e Ferramentas</div>
+          <div class="section-subtitle">Sistemas, planilhas e canais de comunicação</div>
+        </div>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">🖥️</div>
+          <div class="card-title">Sistema ADM</div>
+          <p class="card-desc">Sistema central da operação (via navegador). Agendamentos, cadastros, lançamento de pagamentos e avaliações.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">💬</div>
+          <div class="card-title">Microsoft Teams</div>
+          <p class="card-desc">Canal oficial de comunicação interna com RH, Financeiro e Qualidade. Grupos por processo e cliente.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">📊</div>
+          <div class="card-title">Google Drive</div>
+          <p class="card-desc">Repositório de todas as planilhas operacionais. Compartilhado com a equipe e outros departamentos.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">📱</div>
+          <div class="card-title">WhatsApp</div>
+          <p class="card-desc">Comunicação direta com pesquisadores e repositório de textos padrão da equipe.</p>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Canais do Teams</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Canal</th><th>Finalidade</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Recrutamento e Operações</strong></td><td>Aprovações de candidatos, abertura e alteração de vagas</td></tr>
+              <tr><td><strong>Distratos</strong></td><td>Formalização de desligamentos de pesquisadores</td></tr>
+              <tr><td><strong>Lembretes e Avisos</strong></td><td>Prazos de pagamento e comunicados gerais</td></tr>
+              <tr><td><strong>Tarefas Estagiária</strong></td><td>Solicitações de apoio para a estagiária de OP</td></tr>
+              <tr><td><strong>Canal de cada cliente</strong></td><td>Comunicação com Qualidade sobre pesquisas e ocorrências</td></tr>
+              <tr><td><strong>Listas (em Pesquisas)</strong></td><td>Controle das listas de agendamento semanal</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Planilhas do Drive</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Planilha</th><th>Finalidade</th></tr></thead>
+            <tbody>
+              <tr><td><strong>MEI 2026</strong></td><td>Aprovação, pagamento e distrato de pesquisadores MEI</td></tr>
+              <tr><td><strong>Detalhamento Freelancer</strong></td><td>Controle e pagamento de pesquisadores Freela</td></tr>
+              <tr><td><strong>Processos Seletivos</strong></td><td>Controle de candidatos aprovados e feedbacks (compartilhada com RH)</td></tr>
+              <tr><td><strong>Desistência/Demissão de Pesquisadores</strong></td><td>Formalização de distratos</td></tr>
+              <tr><td><strong>Envio de Equipamentos</strong></td><td>Solicitação e controle de envio de equipamentos</td></tr>
+              <tr><td><strong>Operações - Feedback Mensal</strong></td><td>Avaliação mensal dos pesquisadores por analista</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="alert warning">
+        <span class="alert-icon">⚠️</span>
+        <div><strong>Atenção:</strong> As planilhas do Drive são compartilhadas com toda a equipe. Em planilhas cooperativas com outros departamentos, tome cuidado ao preencher ou excluir dados — especialmente com Ctrl+Z quando outro membro estiver usando ao mesmo tempo.</div>
+      </div>
+    </section>
+
+    <!-- 3. PROCESSOS SELETIVOS -->
+    <section class="section" id="s3">
+      <div class="section-header">
+        <div class="section-num">03</div>
+        <div>
+          <div class="section-title">Processos Seletivos</div>
+          <div class="section-subtitle">Gestão de vagas e aprovação de pesquisadores</div>
+        </div>
+      </div>
+
+      <p>O analista gerencia o ciclo completo de vagas de pesquisadores. Toda a comunicação deste processo é feita pelo canal <strong>Recrutamento e Operações</strong> no Teams.</p>
+
+      <div class="subsection">
+        <div class="subsection-title">Gestão de Vagas</div>
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-icon">🟢</div>
+            <div class="card-title">Abrir uma vaga</div>
+            <p class="card-desc">Nova demanda · Resultado baixo de um pesquisador · Alto custo por pesquisador</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🔴</div>
+            <div class="card-title">Encerrar uma vaga</div>
+            <p class="card-desc">Cliente cancela a demanda · Pesquisador existente aceita a rota</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🟡</div>
+            <div class="card-title">Alterar uma vaga</div>
+            <p class="card-desc">Nova otimização de rota · Aumento de demanda · Exclusão de concorrente solicitada pelo cliente</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Regimes e Diárias</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Regime</th><th>4 horas</th><th>6 horas</th><th>8 horas</th></tr></thead>
+            <tbody>
+              <tr><td><strong>MEI</strong></td><td>R$ 50,00/dia</td><td>R$ 75,00/dia</td><td>R$ 95,00/dia</td></tr>
+              <tr><td><strong>Freela</strong></td><td>R$ 50,00/dia</td><td>R$ 75,00/dia</td><td>R$ 95,00/dia</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Aprovação de Pesquisador MEI</div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Preencher planilha MEI 2026</div>
+              <p class="step-desc">Aba "Candidatos Aprovados" — preencher todas as informações até o campo "Data Início Campo".</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Enviar mensagem padrão no Teams</div>
+              <p class="step-desc">Canal "Recrutamento e Operações", marcando: responsável por OP, Viviane e Rodrigo (RH), Fabiana (RH) e a estagiária Ayumi.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">Estagiária complementa os dados</div>
+              <p class="step-desc">Ayumi preenche as informações restantes na planilha MEI 2026 até a coluna H.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Aprovação de Pesquisador Freela</div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Solicitar documentos</div>
+              <p class="step-desc">RG (frente e verso), comprovante de residência e dados bancários completos (conta, agência, banco e PIX).</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Criar pasta no Drive</div>
+              <p class="step-desc">Zukkin Freela → Freela Campo → Criar pasta com o nome do pesquisador e salvar todos os documentos.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">Cadastrar dados bancários no ADM</div>
+              <p class="step-desc">Acessar o ADM do pesquisador e preencher todos os dados bancários.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <div class="step-title">Enviar mensagem de aprovação</div>
+              <p class="step-desc">Canal "Recrutamento e Operações" no Teams, com nome, cidade e prints dos dados. Este passo é sempre responsabilidade do analista.</p>
+            </div>
+          </div>
+        </div>
+        <div class="alert success">
+          <span class="alert-icon">💡</span>
+          <div>Os passos 2 e 3 podem ser delegados à estagiária via grupo "Tarefas Estagiárias". Ela cria a pasta, cadastra os dados e envia o print — mas o envio da mensagem de aprovação no Teams é sempre do analista.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. TEXTOS PADRÃO -->
+    <section class="section" id="s4">
+      <div class="section-header">
+        <div class="section-num">04</div>
+        <div>
+          <div class="section-title">Textos Padrão</div>
+          <div class="section-subtitle">Comunicação uniforme nos canais internos e externos</div>
+        </div>
+      </div>
+
+      <p>Os textos padrão garantem comunicação eficiente e uniforme entre todos os analistas. Os textos completos estão disponíveis no grupo WhatsApp "Textos Padrões" e nos canais do Teams.</p>
+
+      <div class="subsection">
+        <div class="subsection-title">Texto de Ocorrência</div>
+        <p>Usado <strong>exclusivamente</strong> nos grupos de cliente com a equipe de Qualidade.</p>
+        <div class="text-template">
+          <p class="title-line"><strong>Ocorrência</strong> (título da mensagem)</p>
+          <p>@AnalistadeQL | @analistasêniorOP | @EstagiáriadeOP</p>
+          <p>🛒 <strong>Loja:</strong> (Nome do estabelecimento — Cidade/UF)</p>
+          <p>🔍 <strong>Tipo:</strong> (Semanal, quinzenal, mensal...)</p>
+          <p>🕵️ <strong>Pesquisador:</strong> (Nome completo)</p>
+          <p>⚠️ <strong>Ocorrência:</strong> (descrever de forma objetiva)</p>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Texto de Antecipação de Pagamento</div>
+        <div class="text-template">
+          <p class="title-line"><strong>Antecipação - [Nome do Pesquisador]</strong> (título)</p>
+          <p>Boa tarde, @Fabiana Roballo (Zukkin - Financeiro), tudo bem?</p>
+          <p>Solicito a antecipação de <strong>R$___</strong> para:</p>
+          <p><strong>Pesquisador:</strong> ___</p>
+          <p><strong>Regime:</strong> (MEI ou Freela)</p>
+          <p><strong>Possui esse valor para receber:</strong> (Sim/Não)</p>
+          <p><strong>Motivo:</strong> ___</p>
+        </div>
+        <div class="alert warning">
+          <span class="alert-icon">⚠️</span>
+          <div>O <strong>motivo</strong> é decisivo: o analista avalia se a antecipação é justificável antes de encaminhar ao Financeiro. Muitas solicitações são apenas por conveniência — priorize casos em que o pesquisador precisa do valor para trabalhar (ex.: transporte).</div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Texto de Abertura de Vaga</div>
+        <div class="text-template">
+          <p class="title-line"><strong>Abrir Vaga</strong> (título da mensagem)</p>
+          <p>Bom dia @responsávelporOP</p>
+          <p>Precisamos abrir uma vaga para <strong>[Nome da vaga/UF]</strong>:</p>
+          <p><strong>SEGUNDA-FEIRA</strong></p>
+          <p>Loja: · Endereço: · Qnt itens: · Prazo:</p>
+          <p>Cliente: · Motivo: · Regime: · Veículo próprio: · Prioridade: (Alta/Média/Baixa)</p>
+          <p>psc @Fabiana Roballo (Financeiro) @Recursos Humanos</p>
+        </div>
+        <p>O nome da vaga deve referenciar a cidade (ex.: Santos, Santos 2, Santos 3...).</p>
+      </div>
+    </section>
+
+    <!-- 5. NOVOS PESQUISADORES -->
+    <section class="section" id="s5">
+      <div class="section-header">
+        <div class="section-num">05</div>
+        <div>
+          <div class="section-title">Novos Pesquisadores</div>
+          <div class="section-subtitle">Recebimento, avaliação e integração</div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Avaliação do Candidato</div>
+        <p>Antes da aprovação definitiva, o analista avalia o desempenho do candidato com base em:</p>
+        <ul class="styled">
+          <li><strong>Encontramento na pesquisa teste</strong> — capacidade de localizar os produtos corretamente</li>
+          <li><strong>Tempo de coleta</strong> — agilidade na realização da pesquisa teste</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Fluxo de Integração</div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Mensagem de Boas-Vindas</div>
+              <p class="step-desc">Enviar texto padrão de Boas-Vindas com o link do feedback da pesquisa teste (encontrado na planilha Processos Seletivos, aba "Candidatos Aprovados") e uma data disponível para o primeiro dia de coleta.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Solicitar foto para o crachá</div>
+              <p class="step-desc">Pedir foto em formato semelhante a 3x4 na própria mensagem de Boas-Vindas.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">Solicitar Carta e Crachá à estagiária</div>
+              <p class="step-desc">Enviar no grupo "Tarefas Estagiária" o nome e a foto do pesquisador. A estagiária elabora a Carta de Autorização e o Crachá.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <div class="step-title">Encaminhar ao pesquisador</div>
+              <p class="step-desc">Enviar a carta e o crachá ao pesquisador. O valor reembolsável para impressão é de até <strong>R$ 15,00</strong>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. PAGAMENTOS -->
+    <section class="section" id="s6">
+      <div class="section-header">
+        <div class="section-num">06</div>
+        <div>
+          <div class="section-title">Pagamentos</div>
+          <div class="section-subtitle">MEI e Freela — prazos, planilhas e lançamentos</div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Pagamento MEI</div>
+        <p>Realizado via planilha <strong>MEI 2026</strong>. O período de preenchimento é sempre a <strong>última semana do mês</strong>, com importação no ADM até a sexta-feira.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Colunas</th><th>Campo</th><th>Responsável</th></tr></thead>
+            <tbody>
+              <tr><td><strong>K → P</strong></td><td>Reembolsos</td><td>Analista — registra extras, crachá, carta de autorização</td></tr>
+              <tr><td><strong>Q</strong></td><td>Dias trabalhados</td><td>Analista — inclui todos os dias do mês (com ou sem faltas)</td></tr>
+              <tr><td><strong>S</strong></td><td>Antecipações</td><td>Financeiro — preenche quando há antecipação aprovada</td></tr>
+              <tr><td><strong>T</strong></td><td>Faltas</td><td>Analista — registra faltas para desconto de diárias</td></tr>
+              <tr><td><strong>V</strong></td><td>Valor final (ADM)</td><td>Estagiária atualiza; analista importa no ADM</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Pagamento Freela</div>
+        <p>Realizado via planilha <strong>Detalhamento Freelancer</strong>.</p>
+        <div class="alert danger">
+          <span class="alert-icon">🚨</span>
+          <div><strong>Regra de limite:</strong> Freela só é aprovado quando o pagamento mensal é inferior a <strong>R$ 600,00</strong>. Ao ultrapassar esse valor, é obrigatório justificar na aba "Consolidado" e informar por que o pesquisador não é MEI. Sempre que possível, migre o pesquisador para o regime MEI.</div>
+        </div>
+        <div class="sub-sub-title">Datas de pagamento Freela</div>
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-icon">📅</div>
+            <div class="card-title">Dia 10 do mês</div>
+            <p class="card-desc">Valores devem estar lançados no ADM até o dia <strong>08</strong>.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">📅</div>
+            <div class="card-title">Dia 25 do mês</div>
+            <p class="card-desc">Valores devem estar lançados no ADM até o dia <strong>23</strong>.</p>
+          </div>
+        </div>
+        <div class="sub-sub-title">Passo a passo</div>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Preencher aba "Detalhamento"</div><p class="step-desc">Responsável, ID do pesquisador, nome, cidade/UF, cliente, loja, valor por pesquisa e frequência. O valor total é calculado automaticamente.</p></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Verificar aba "Consolidado"</div><p class="step-desc">Conferir resumo dos pesquisadores e valores do período.</p></div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Solicitar atualização à estagiária</div><p class="step-desc">Via grupo "Tarefas Estagiárias" para que ela atualize a planilha pessoal do período.</p></div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Lançar valores no ADM</div><p class="step-desc">Após confirmação da estagiária, realizar o lançamento no sistema.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. DISTRATOS -->
+    <section class="section" id="s7">
+      <div class="section-header">
+        <div class="section-num">07</div>
+        <div>
+          <div class="section-title">Distratos</div>
+          <div class="section-subtitle">Desligamento formal de pesquisadores</div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Quando realizar o distrato?</div>
+        <p>Quando o pesquisador não está mais trazendo resultados efetivos à operação. Aspectos a analisar antes de decidir:</p>
+        <ul class="styled">
+          <li>Se possui contrato assinado e há quanto tempo</li>
+          <li>Se ainda não assinou contrato → trata-se de <strong>cancelamento de contrato</strong></li>
+          <li>Contratos com <strong>3 meses ou mais</strong>: obrigatório oferecer 15 dias de aviso prévio (o pesquisador decide se cumpre ou não)</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Cancelamento de Contrato (sem contrato assinado)</div>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Enviar e-mail ao RH</div><p class="step-desc">Solicitando cancelamento com nome do pesquisador, motivo e dados. Usar o modelo padrão de e-mail.</p></div></div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Demissão ou Desistência (com contrato assinado)</div>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Preencher planilha "Desistência/Demissão de Pesquisadores"</div><p class="step-desc">Válida para MEI e Freela — informar todos os dados do pesquisador.</p></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Preencher planilha MEI 2026, aba "Distratos"</div><p class="step-desc">Até a coluna O — dados do pesquisador (do ADM), dias trabalhados, diária e custos extras. O valor a receber é calculado automaticamente.</p></div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Informar o valor ao pesquisador</div><p class="step-desc">Comunicar via WhatsApp o valor que ele irá receber.</p></div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Enviar mensagem padrão no canal "Distratos" do Teams</div><p class="step-desc">Informar o nome do pesquisador e anexar print do WhatsApp confirmando que ele está ciente do valor.</p></div></div>
+          <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Responsável de OP confere e dá seguimento</div><p class="step-desc">O processo final é encaminhado pelo responsável de OP.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. AGENDAMENTOS -->
+    <section class="section" id="s8">
+      <div class="section-header">
+        <div class="section-num">08</div>
+        <div>
+          <div class="section-title">Agendamentos</div>
+          <div class="section-subtitle">Organização semanal das pesquisas no ADM</div>
+        </div>
+      </div>
+
+      <p>Os agendamentos são realizados semanalmente — geralmente na <strong>sexta-feira</strong> — assim que o analista de Qualidade libera as listas de cada cliente. O processo ocorre no ADM via importação de arquivo XLS.</p>
+
+      <div class="subsection">
+        <div class="subsection-title">SEM alteração na lista</div>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Verificar lista no Teams</div><p class="step-desc">Acessar canal "Listas" em Pesquisas e conferir a semana atual.</p></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Confirmar coluna "Alterado"</div><p class="step-desc">Se o cliente estiver como NÃO, a lista permanece igual à semana anterior.</p></div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Atualizar data no XLS</div><p class="step-desc">Copiar a coluna de data da extrema direita e colar na extrema esquerda usando <strong>Ctrl + Shift + V</strong> (colar somente valores).</p></div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Importar XLS no ADM</div><p class="step-desc">ADM → Adicionar Nova Agenda → selecionar o cliente → Importar XLS → Agendar.</p></div></div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">COM alteração na lista</div>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Verificar alterações no canal do cliente</div><p class="step-desc">O analista de Qualidade publica no Teams quais listas foram alteradas na semana.</p></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Baixar o Modelo XLS no ADM</div><p class="step-desc">ADM → Adicionar Nova Agenda → clicar em "Modelo XLS" para baixar o arquivo.</p></div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Localizar as novas listas</div><p class="step-desc">No Modelo XLS, filtrar o cliente na aba "Listas" e localizar a nova lista informada pelo analista de QL.</p></div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Atualizar o XLS do cliente</div><p class="step-desc">Apagar a lista antiga no seu XLS e colar a nova lista do Modelo XLS. Atentar para o dia correto em caso de múltiplas pesquisas.</p></div></div>
+          <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Atualizar data e importar</div><p class="step-desc">Seguir os mesmos passos do agendamento sem alteração para atualizar a data e importar no ADM.</p></div></div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Agenda Recorrente</div>
+        <p>A funcionalidade <strong>Agenda Recorrente</strong> no ADM permite programar agendamentos automáticos semanais, quinzenais e mensais. Após a inclusão inicial do cliente, não é mais necessário agendamento manual. O analista apenas:</p>
+        <ul class="styled">
+          <li>Insere novos clientes ou listas conforme demanda</li>
+          <li>Atualiza informações (lista, pesquisador) quando houver alterações</li>
+          <li>Exclui agendamentos que não serão mais realizados</li>
+        </ul>
+        <div class="alert success">
+          <span class="alert-icon">💡</span>
+          <div>A Agenda Recorrente garante maior organização, padronização e otimização da rotina. Sempre que possível, migre os clientes para esse modelo.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. REMANEJAMENTO -->
+    <section class="section" id="s9">
+      <div class="section-header">
+        <div class="section-num">09</div>
+        <div>
+          <div class="section-title">Remanejamento e Datapoint</div>
+          <div class="section-subtitle">Redistribuição de rotas e controle de custo por item</div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">O que é Remanejamento?</div>
+        <p>Redistribuição de pesquisadores, rotas ou abertura de novas vagas para garantir que todas as pesquisas sejam entregues no prazo, com qualidade e bom custo, mesmo diante de imprevistos.</p>
+        <div class="sub-sub-title">Quando remanejar?</div>
+        <ul class="styled">
+          <li>Pesquisador faltou</li>
+          <li>Cliente solicitou nova pesquisa sem pesquisadores disponíveis</li>
+          <li>Custo alto por Datapoint identificado</li>
+          <li>Necessidade de otimização de rota</li>
+          <li>Pesquisador sinalizou que não conseguirá entregar no prazo</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Passo a Passo</div>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Identificar a necessidade</div><p class="step-desc">Rota sem cobertura, aumento de demanda ou pesquisador indisponível.</p></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Mapear rotas impactadas</div><p class="step-desc">Definir prioridades com base em urgência e prazo do cliente.</p></div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Avaliar opções disponíveis</div><p class="step-desc">Priorizar experiência e proximidade geográfica. Nunca aceitar a primeira proposta sem negociar.</p></div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Comunicar os envolvidos</div><p class="step-desc">Avisar o cliente e a equipe de Qualidade quando necessário, através do canal do cliente no Teams.</p></div></div>
+          <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Monitorar após a mudança</div><p class="step-desc">Verificar prazo de entrega e encontramento na pesquisa.</p></div></div>
+        </div>
+        <div class="alert warning">
+          <span class="alert-icon">⚠️</span>
+          <div>Sempre verifique se a rota extra não impactará o prazo de outros clientes do pesquisador. Remanejamentos exigem agilidade — mantenha atenção total e determine prioridades.</div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Cálculo de Datapoint</div>
+        <p>O <strong>Datapoint</strong> é a unidade do item pesquisado. O R$/datapoint indica o custo por item coletado.</p>
+        <div class="alert danger">
+          <span class="alert-icon">🎯</span>
+          <div><strong>Meta da operação: manter até R$ 0,14 por Datapoint.</strong></div>
+        </div>
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-icon">👤</div>
+            <div class="card-title">Por Pesquisador</div>
+            <div class="formula">
+              <div class="label">Fórmula</div>
+              <div class="eq">R$/dp = Valor pago ÷ Total de itens</div>
+              <div class="example">Ex.: R$100 ÷ 1.000 itens = R$0,10/dp ✅</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-icon">🏪</div>
+            <div class="card-title">Por Coleta</div>
+            <div class="formula">
+              <div class="label">Fórmula</div>
+              <div class="eq">R$/dp = Valor da coleta ÷ Itens da coleta</div>
+              <div class="example">Ex.: R$112 ÷ 800 itens = R$0,14/dp ✅</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. DIA A DIA -->
+    <section class="section" id="s10">
+      <div class="section-header">
+        <div class="section-num">10</div>
+        <div>
+          <div class="section-title">Rotina Diária</div>
+          <div class="section-subtitle">Equipamentos, avaliações, ocorrências e feriados</div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Solicitação de Equipamentos</div>
+        <p>A Zukkin disponibiliza Kindle, carregador portátil, celular e uniformes para os pesquisadores. O fluxo:</p>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Preencher planilha "Envio de Equipamentos"</div><p class="step-desc">Registrar todos os dados do equipamento e do pesquisador.</p></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Solicitar à estagiária</div><p class="step-desc">Via grupo "Tarefas Estagiária" — ela envia o e-mail de solicitação toda segunda-feira.</p></div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Receber código de rastreio</div><p class="step-desc">O RH retorna com o código, que pode ser repassado ao pesquisador.</p></div></div>
+        </div>
+        <p>Para <strong>devolução</strong> (em caso de demissão, defeito ou problema), solicitar à estagiária para que envie e-mail ao RH pedindo o código de devolução.</p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Sistemas Mob2Con e Connect</div>
+        <p>Alguns estabelecimentos exigem cadastro dos pesquisadores nesses sistemas para acesso. O analista solicita à estagiária informando: <strong>nome do pesquisador, sistema (Mob2Con ou Connect) e estabelecimento</strong>. A estagiária encaminha ao RH com os dados completos (nome, telefone, CPF, estabelecimentos e carta de apresentação).</p>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Avaliação Mensal dos Pesquisadores</div>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Solicitar atualização da planilha</div><p class="step-desc">Pedir à estagiária para atualizar a planilha pessoal de notas (Operações - Feedback Mensal) na sua aba.</p></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Lançar as notas</div><p class="step-desc">Avaliar cada pesquisador individualmente por critério. A média final é calculada automaticamente. Parâmetros de avaliação estão na parte superior da planilha.</p></div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Registrar no ADM</div><p class="step-desc">ADM → Pesquisadores → Avaliação de Responsabilidade → Avaliar → Confirmar mês → Informar Nota → Salvar Avaliação.</p></div></div>
+        </div>
+        <div class="alert success">
+          <span class="alert-icon">💡</span>
+          <div><strong>Dica:</strong> Filtre o período por "Hoje" no ADM para evitar lançar a avaliação no mês incorreto.</div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Pesquisador Barrado em Loja</div>
+        <p>Ações imediatas quando um pesquisador é impedido de entrar em um estabelecimento:</p>
+        <ul class="styled">
+          <li><strong>Loja de cliente já atendido:</strong> avisar o analista de QL para solicitar liberação ao cliente. Avaliar com o responsável de OP.</li>
+          <li><strong>Loja nova:</strong> pedir ao pesquisador que consiga e-mail ou telefone do gerente para solicitar autorização.</li>
+          <li><strong>Verificar outros pesquisadores</strong> disponíveis na região.</li>
+          <li><strong>Verificar mesma bandeira</strong> em outro endereço na cidade ou cidades próximas.</li>
+          <li><strong>Sugerir endereço alternativo</strong> da mesma bandeira com autorização garantida.</li>
+        </ul>
+        <p>Ao solicitar autorização, sempre informar: nome completo e CPF do pesquisador, contato para envio, carta de autorização com data atual (solicitar à estagiária).</p>
+        <div class="alert danger">
+          <span class="alert-icon">🚨</span>
+          <div><strong>Urgência:</strong> Ao receber o aviso de barrado, envie todos os dados imediatamente. Pesquisas com cronograma fixo devem ter o registro feito no mesmo instante no canal do cliente no Teams. Mantenha o analista de QL sempre atualizado.</div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-title">Feriados</div>
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-icon">📋</div>
+            <div class="card-title">Para os Pesquisadores</div>
+            <p class="card-desc">Informar a folga com 1 semana de antecedência. Se o feriado cair entre seg–qui, mover a folga para sexta (confirmar com o pesquisador). O ideal é que adiantem as coletas durante a semana.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">🧑‍💻</div>
+            <div class="card-title">Para os Analistas</div>
+            <p class="card-desc">Plantão programado pelo supervisor de OP. Sempre haverá um analista de plantão. Quem folga deve passar todos os contatos dos pesquisadores e pendências ao plantonista.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11. REFERÊNCIA RÁPIDA -->
+    <section class="section" id="s11">
+      <div class="section-header">
+        <div class="section-num">11</div>
+        <div>
+          <div class="section-title">Referência Rápida</div>
+          <div class="section-subtitle">Todos os processos, canais e responsáveis em um só lugar</div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="quick-ref">
+          <thead>
+            <tr><th>Processo</th><th>Canal / Ferramenta</th><th>Responsável</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Abertura/Alteração de vaga</td><td>Teams — Recrutamento e Operações</td><td>Analista <span class="badge">obrigatório</span></td></tr>
+            <tr><td>Aprovação MEI</td><td>Teams + Planilha MEI 2026</td><td>Analista + Estagiária</td></tr>
+            <tr><td>Aprovação Freela</td><td>Teams + Drive + ADM</td><td>Analista + Estagiária</td></tr>
+            <tr><td>Boas-Vindas ao pesquisador</td><td>WhatsApp + Planilha Processos Seletivos</td><td>Analista <span class="badge">obrigatório</span></td></tr>
+            <tr><td>Crachá e carta de autorização</td><td>Teams — Tarefas Estagiária</td><td>Estagiária <span class="badge blue">apoio</span></td></tr>
+            <tr><td>Pagamento MEI</td><td>Planilha MEI 2026 + ADM</td><td>Analista + Estagiária</td></tr>
+            <tr><td>Pagamento Freela</td><td>Planilha Detalhamento Freelancer + ADM</td><td>Analista + Estagiária</td></tr>
+            <tr><td>Distrato</td><td>Teams — Distratos + Planilhas</td><td>Analista <span class="badge">obrigatório</span></td></tr>
+            <tr><td>Agendamento semanal</td><td>Teams — Listas + XLS + ADM</td><td>Analista</td></tr>
+            <tr><td>Ocorrência em campo</td><td>Teams — Canal do cliente (com QL)</td><td>Analista <span class="badge">urgente</span></td></tr>
+            <tr><td>Envio de equipamentos</td><td>Planilha Envio de Equipamentos + Teams</td><td>Estagiária <span class="badge blue">apoio</span></td></tr>
+            <tr><td>Cadastro Mob2Con/Connect</td><td>Teams — Tarefas Estagiária</td><td>Estagiária <span class="badge blue">apoio</span></td></tr>
+            <tr><td>Avaliação mensal</td><td>Planilha Feedback Mensal + ADM</td><td>Analista + Estagiária</td></tr>
+            <tr><td>Remanejamento</td><td>Teams — Canal do cliente + WhatsApp</td><td>Analista <span class="badge">urgente</span></td></tr>
+            <tr><td>Feriados — plantão</td><td>Definido pelo supervisor de OP</td><td>Analista plantonista</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<footer class="page-footer">
+  <div class="brand-f">ZUK<span>KIN</span></div>
+  <p>Manual de Atividades dos Analistas de Operação · 2026</p>
+</footer>
+
+<script>
+  // Active nav item on scroll
+  const sections = document.querySelectorAll('.section');
+  const navItems = document.querySelectorAll('.nav-item');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navItems.forEach(n => n.classList.remove('active'));
+        const active = document.querySelector(`.nav-item[href="#${id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
